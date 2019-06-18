@@ -2,147 +2,56 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Gifs on Demand!</title>
+    <title>GIF quest</title>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    />
   </head>
 
-  <body>
+  <body background="assets/images/huge.png">
     <div class="row">
       <div class="col-sm-4"></div>
-      <div class="col-sm4">
-        <h1>Gifs 4 U</h1>
-        <h6>Gifs on Demand!</h6>
+      <div class="col-sm-4 butter">
+        <h1>GIF Quest</h1>
+        <h6>Venture forth to a world of GIFs</h6>
+        <div class="col-sm-2"></div>
       </div>
     </div>
-
-    <div class="row"></div>
-    <div class="col-sm-9 test"></div>
-    <div class="col-sm-3 clear"></div>
-    <div class="searchkeysrow">
-      <label for="searchTopic">Your Search</label>
-      <input class="form-control" id="input" />
-      <button id="search-button">Search</button>
-    </div>
-
     <div class="row">
-      <div class="col-sm-2"></div>
-      <div class="col-sm-8">
-        <div id="gifs-appear-here"></div>
+      <div class="col-sm-1"></div>
+      <div class="jumbotron col-sm-10">
+        <div class="row">
+          <div class="col-sm-9 test"></div>
+          <div class="col-sm-2 clear"></div>
+        </div>
+        <div class="row">
+          <div class="col-sm-9 clear2">
+            <input class="form-control" id="input" />
+          </div>
+          <div class="col-sm-3">
+            <img src="assets/images/slime.jpg" id="search-button" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-4"></div>
+          <div class="col-sm-4">
+            <div id="gifs-appear-here"></div>
+          </div>
+        </div>
       </div>
     </div>
-    <div id="gifs-appear-here"></div>
+    <link rel="css stylesheet" href="assets/css/style.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function() {
-        var subjects = ["Lions", "Tigers", "Bears", "Oh My"];
-        //Buttons
-
-        //Clear Searches
-        var clear = $("<button>").text("Clear Searches");
-        clear.attr("id", "clear");
-        $(clear).on("click", function() {
-          $(".test").empty();
-        });
-        $(".clear").append(clear);
-
-        //Clears Gifs
-        var clearGifs = $("<button>").text("Clear Gifs");
-        clearGifs.attr("id", "clearGifs");
-        $(clearGifs).on("click", function() {
-          $("#gifs-appear-here").empty();
-        });
-        $(".clear").append(clearGifs);
-
-        //Search
-        $("#search-button").on("click", function() {
-          newSubject = $("#input").val();
-          subjects.push(newSubject);
-          console.log(subjects);
-          test();
-          $("#input").val("");
-        });
-
-        //Loops through the subjects to create buttons
-        function test() {
-          $(".test").empty();
-          for (var i = 0; i < subjects.length; i++) {
-            var button = $("<button>");
-            button.text(subjects[i]);
-            var searchResult = subjects[i];
-            button.attr("data-test", searchResult);
-            console.log(button.attr("data-test"));
-            button.addClass("buttonz");
-
-            $(".test").append(button);
-          }
-          buttonsonline();
-        }
-
-        //Grabs GIFs
-        function buttonsonline() {
-          $(".buttonz").on("click", function() {
-            var imagetest = $(this).attr("data-test");
-            console.log(imagetest);
-            // QueryURL
-            var queryURL =
-              "https://api.giphy.com/v1/gifs/search?q=" +
-              imagetest +
-              "&api_key=kgRKvr92j8D7GLdtKVzlIrkHKdJ7yhv1&limit=10";
-
-            // Ajax Stuff
-            $.ajax({
-              url: queryURL,
-              method: "GET"
-            }).then(function(response) {
-              console.log(queryURL);
-              console.log(response);
-              var results = response.data;
-              // Grabs ups to 10 gifs based on the button pressed
-              for (var i = 0; i < results.length; i++) {
-                if (results[i].rating !== "r") {
-                  var gifDiv = $("<div>");
-                  var p = $("<p>").text("Rating: " + results[i].rating);
-                  var gifImage = $("<img>");
-                  gifImage.addClass("gif");
-
-                  gifImage.attr(
-                    "data-still",
-                    results[i].images.fixed_height_still.url
-                  );
-                  gifImage.attr(
-                    "data-animate",
-                    results[i].images.fixed_height.url
-                  );
-                  gifImage.attr("data-state", "still");
-                  gifImage.attr("src", gifImage.attr("data-still"));
-                  gifDiv.append(p);
-                  gifDiv.append(gifImage);
-                  console.log(gifImage.attr("class"));
-                  $("#gifs-appear-here").prepend(gifDiv);
-                }
-              }
-              $(".gif").on("click", function() {
-                var state = $(this).attr("data-state");
-                console.log(state);
-                if (state === "still") {
-                  $(this).attr("src", $(this).attr("data-animate"));
-                  $(this).attr("data-state", "animate");
-                } else {
-                  $(this).attr("src", $(this).attr("data-still"));
-                  $(this).attr("data-state", "still");
-                }
-              });
-            });
-          });
-        }
-
-        test();
-      });
-    </script>
+    <script src="assets/java/java.js" type="text/javascript"></script>
   </body>
 </html>
