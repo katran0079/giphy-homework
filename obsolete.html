@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Gifs 4 U</title>
+  </head>
+  <body>
+    <div class="row">
+      <div class="col-sm-4"></div>
+      <div class="col-sm4">
+        <h1>Gifs 4 U</h1>
+        <h6>Gifs on Demand!</h6>
+      </div>
+    </div>
+
+    <div class="row"></div>
+    <div class="col-sm-9 test"></div>
+    <div class="col-sm-3 clear"></div>
+    <div class="searchkeysrow">
+      <label for="searchTopic">Your Search</label>
+      <input class="form-control" id="input" />
+      <button id="search-button">Seach</button>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-8 gifs-here"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        var subjects = ["Lions", "Tigers", "Bears", "Oh My"];
+
+        function test3() {
+          var stuff = $(this).attr("data-subject");
+          var queryURL =
+            "https://api.giphy.com/v1/gifs/search?q=" +
+            stuff +
+            "&api_key=kgRKvr92j8D7GLdtKVzlIrkHKdJ7yhv1&limit=10";
+
+          //ajax feature obviously
+          $.ajax({
+            url: queryURL,
+            method: "GET"
+          }).then(function(response) {
+            console.log(queryURL);
+            var results = response.data;
+            for (var i = 0; i < results.length; i++) {
+              var gifsDiv = $("<div>");
+              var rating = results[i].rating;
+              var p = $("<p>").text("Rating: " + rating[i]);
+              var gifs = $("<img>");
+              gifs.attr("src", results[i].images.fixed_height.url);
+              gifsDiv.append(p);
+              gifsDiv.append(gifs);
+              $(".gifs-here").prepend(gifsDiv);
+            }
+          });
+        }
+
+        //prototype button maker
+        function test() {
+          for (var i = 0; i < subjects.length; i++) {
+            var buttonDiv = $("<div>");
+            var button = $("<button>").text(subjects[i]);
+            button.attr("data-subject", subjects[i]);
+            button.addClass("buttons");
+            buttonDiv.append(button);
+            $(".test").append(buttonDiv);
+          }
+          var clear = $("<button>").text("Clear searches");
+          clear.attr("id", "clear");
+          $(clear).on("click", function() {
+            $(".test").empty();
+          });
+          $(".clear").append(clear);
+        }
+
+        function test2() {
+          var lastSubject = subjects[subjects.length - 1];
+          var newButton = $("<button>").text(lastSubject);
+          newButton.attr("data-subject", lastSubject);
+          newButton.addClass("buttons");
+          $(".test").append(newButton);
+        }
+        //button for adding new subjects
+        $("#search-button").on("click", function() {
+          newSubject = $("#input").val();
+          subjects.push(newSubject);
+          console.log(subjects);
+          test2();
+        });
+
+        $("button").on("click", function() {
+          test3();
+          console.log(queryURL);
+        });
+
+        //queryURL
+
+        //fancy search feature
+
+        test();
+
+        console.log(subjects);
+      });
+    </script>
+  </body>
+</html>
